@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VSF Sponsoring</title>
+<meta name="theme-color" content="#0E0E0E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VSF Sponsoring">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Anton&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<script>
+// Lancé comme application installée : on bascule directement vers l'application.
+(function(){
+  var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  if (standalone && window.VSF_EXEC) location.replace(window.VSF_EXEC);
+})();
+</script>
+<style>
+:root{--ink:#0E0E0E;--soft:#404040;--bg:#F5F5F5;--red:#C00000;--line:#E0E0E0;--surf:#fff;--txt:#0E0E0E}
+@media (prefers-color-scheme:dark){:root{--bg:#0E0E0E;--surf:#1A1A1A;--line:#333;--txt:#F2F2F2;--soft:#c8c8c8;--red:#C00000}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:400 16px/1.5 Barlow,Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+main{width:100%;max-width:440px;background:var(--surf);border:1px solid var(--line);padding:32px 24px;text-align:center}
+img.ic{width:112px;height:112px;display:block;margin:0 auto 24px}
+h1{font:400 28px/1.1 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.02em;margin:0 0 8px}
+p{margin:0 0 24px;color:var(--soft)}
+.btn{display:block;width:100%;min-height:48px;padding:12px 24px;border:2px solid var(--red);background:var(--red);color:#fff;font:600 16px Barlow,Arial,sans-serif;text-decoration:none;cursor:pointer;margin-bottom:16px}
+.btn.alt{background:transparent;color:var(--red)}
+@media (prefers-color-scheme:dark){.btn.alt{color:#FF6B5B;border-color:#FF6B5B}}
+.btn:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.aide{text-align:left;font-size:15px;border-top:1px solid var(--line);padding-top:16px;margin-top:8px;color:var(--soft)}
+.aide b{color:var(--txt)}
+.aide li{margin-bottom:6px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <img class="ic" src="icons/icon-192.png" alt="Icône VSF Sponsoring">
+  <h1>VSF Sponsoring</h1>
+  <p>Suivi des prospects et sponsors du club.</p>
+  <button class="btn" id="inst" hidden>Installer l'application</button>
+  <a class="btn alt" id="open" href="#">Ouvrir l'application</a>
+  <div class="aide">
+    <b>Installer sur le téléphone ou le PC</b>
+    <ul>
+      <li><b>PC (Chrome / Edge)</b> : bouton « Installer », ou icône d'installation dans la barre d'adresse.</li>
+      <li><b>Android (Chrome)</b> : menu ⋮ puis « Installer l'application ».</li>
+      <li><b>iPhone (Safari)</b> : bouton Partager puis « Sur l'écran d'accueil ».</li>
+    </ul>
+    Après installation, ouvrez l'application depuis son icône et connectez-vous comme d'habitude.
+  </div>
+</main>
+<script>
+(function(){
+  var o=document.getElementById('open');
+  if(window.VSF_EXEC){o.href=window.VSF_EXEC;}else{o.removeAttribute('href');o.textContent='Adresse de l’application non configurée';o.style.opacity='.5'}
+  var dp=null,b=document.getElementById('inst');
+  addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;b.hidden=false});
+  b.addEventListener('click',function(){if(!dp)return;dp.prompt();dp.userChoice.then(function(){dp=null;b.hidden=true})});
+  addEventListener('appinstalled',function(){b.hidden=true});
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
+</script>
+</body>
+</html>
